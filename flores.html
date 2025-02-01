@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flores</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Estilos para la segunda pantalla */
+    body {
+      background-image: url('marce.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .message-container {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 600px;
+    }
+
+    .message-container h1 {
+      font-size: 2rem;
+      color: #ff3234;
+    }
+  </style>
+</head>
+<body>
+  <!-- Reproductor de música -->
+  <audio id="background-music" loop>
+    <source src="te regalo.mp3" type="audio/mpeg">
+    Tu navegador no soporta la reproducción de audio.
+  </audio>
+
+  <div class="message-container">
+    <h1 id="flores-message">¡Gracias jamas te voy a decepcionar y estaras orgullosa de haber elejido al mejor novio del mundo!</h1>
+  </div>
+
+  <script>
+    // Obtener el elemento de audio
+    const music = document.getElementById('background-music');
+
+    // Verificar si hay un estado guardado en localStorage
+    const savedTime = localStorage.getItem('audioTime');
+    const isPlaying = localStorage.getItem('audioPlaying') === 'true';
+
+    // Restaurar el tiempo de reproducción y el estado
+    if (savedTime) {
+      music.currentTime = parseFloat(savedTime);
+    }
+    if (isPlaying) {
+      music.play();
+    }
+
+    // Guardar el tiempo de reproducción y el estado en localStorage
+    music.addEventListener('timeupdate', () => {
+      localStorage.setItem('audioTime', music.currentTime);
+    });
+
+    music.addEventListener('play', () => {
+      localStorage.setItem('audioPlaying', 'true');
+    });
+
+    music.addEventListener('pause', () => {
+      localStorage.setItem('audioPlaying', 'false');
+    });
+
+    // Reproducir música automáticamente al cargar la página
+    music.play().catch(error => {
+      console.log("La reproducción automática fue bloqueada. Haz clic en la página para reproducir.");
+    });
+
+    // Reproducir música al hacer clic en cualquier parte de la página
+    document.body.addEventListener('click', () => {
+      music.play();
+    });
+
+    // Mostrar el mensaje en la pantalla
+    if (messageCustom) {
+      const messageElement = document.querySelector('#flores-message');
+      messageElement.textContent = decodeURIComponent(messageCustom);
+    }
+  </script>
+</body>
+</html>
